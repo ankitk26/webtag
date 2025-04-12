@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Calendar, Globe, Lock } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
@@ -11,15 +12,14 @@ import { BookmarkDisplay } from "~/db/schema";
 import { formatDate } from "~/lib/format-date";
 import { getFaviconUrl } from "~/lib/get-favicon-url";
 import { getUrlDomain } from "~/lib/get-url-domain";
-import BookmarkActions from "./bookmark-actions";
-import { useQuery } from "@tanstack/react-query";
 import { singleBookmarkTagsQuery } from "~/lib/queries";
+import BookmarkActions from "./bookmark-actions";
 
 interface Props {
   bookmark: BookmarkDisplay;
 }
 
-export function BookmarkListItem({ bookmark }: Props) {
+export default function BookmarkListItem({ bookmark }: Props) {
   const { data: tags } = useQuery(
     singleBookmarkTagsQuery({ bookmarkId: bookmark.id })
   );
@@ -73,6 +73,8 @@ export function BookmarkListItem({ bookmark }: Props) {
         <Link
           to={bookmark.url}
           className="text-xs hover:underline text-muted-foreground"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {getUrlDomain(bookmark.url)}
         </Link>

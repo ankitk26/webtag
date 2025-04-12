@@ -4,12 +4,12 @@ import { Plus } from "lucide-react";
 import { useDashboardStore } from "~/hooks/use-dashboard-store";
 import { filteredBookmarksQuery } from "~/lib/queries";
 import { Button } from "../ui/button";
-import { BookmarkListItem } from "./bookmark-list-item";
-import { BookmarkCard } from "./boomark-card";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
 import BookmarkCardSkeleton from "./bookmark-card-skeleton";
+import BookmarkListItem from "./bookmark-list-item";
 import BookmarkListItemSkeleton from "./bookmark-list-item-skeleton";
+import BookmarkMinimalItem from "./bookmark-minimal-item";
+import BookmarkMinimalItemSkeleton from "./bookmark-minimal-item-skeleton";
+import BookmarkCard from "./boomark-card";
 
 export default function BookmarksList() {
   const { view, access, tags, folderId } = useSearch({
@@ -39,21 +39,28 @@ export default function BookmarksList() {
   });
 
   if (isPending) {
-    if (view === "grid") {
-      return <BookmarkCardSkeleton />;
-    }
-    return <BookmarkListItemSkeleton />;
+    if (view === "grid") return <BookmarkCardSkeleton />;
+    if (view === "list") return <BookmarkListItemSkeleton />;
+    return <BookmarkMinimalItemSkeleton />;
   }
 
   return (
     <>
-      {view === "grid" ? (
+      {view === "grid" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredBookmarks?.map((bookmark) => (
             <BookmarkCard key={bookmark.id} bookmark={bookmark} />
           ))}
         </div>
-      ) : (
+      )}
+      {view === "minimal" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredBookmarks?.map((bookmark) => (
+            <BookmarkMinimalItem key={bookmark.id} bookmark={bookmark} />
+          ))}
+        </div>
+      )}
+      {view === "list" && (
         <div className="space-y-3">
           {filteredBookmarks?.map((bookmark) => (
             <BookmarkListItem key={bookmark.id} bookmark={bookmark} />

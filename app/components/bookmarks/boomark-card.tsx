@@ -1,31 +1,25 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Calendar, Globe, Lock } from "lucide-react";
+import { Calendar } from "lucide-react";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "~/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import { BookmarkDisplay } from "~/db/schema";
 import { formatDate } from "~/lib/format-date";
 import { getFaviconUrl } from "~/lib/get-favicon-url";
 import { getUrlDomain } from "~/lib/get-url-domain";
+import { singleBookmarkTagsQuery } from "~/lib/queries";
 import { Badge } from "../ui/badge";
 import BookmarkActions from "./bookmark-actions";
-import { useQuery } from "@tanstack/react-query";
-import { singleBookmarkTagsQuery } from "~/lib/queries";
 
 interface Props {
   bookmark: BookmarkDisplay;
 }
 
-export function BookmarkCard({ bookmark }: Props) {
+export default function BookmarkCard({ bookmark }: Props) {
   const { data: tags } = useQuery(
     singleBookmarkTagsQuery({ bookmarkId: bookmark.id })
   );
@@ -50,6 +44,8 @@ export function BookmarkCard({ bookmark }: Props) {
             <Link
               to={bookmark.url}
               className="text-xs text-muted-foreground mt-1 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {getUrlDomain(bookmark.url)}
             </Link>
