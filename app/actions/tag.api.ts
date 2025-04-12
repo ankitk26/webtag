@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
-import { eq, and } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "~/db";
-import { tags, bookmark_tags, bookmarks } from "~/db/schema";
+import { bookmark_tags, bookmarks, tags } from "~/db/schema";
 import { authMiddleware } from "~/lib/auth-middleware";
 
 export const getBookmarkTags = createServerFn({ method: "GET" })
@@ -14,11 +14,13 @@ export const getBookmarkTags = createServerFn({ method: "GET" })
       .selectDistinct({
         id: tags.id,
         name: tags.name,
+        created_at: bookmark_tags.created_at,
       })
       .from(bookmarks)
       .innerJoin(bookmark_tags, eq(bookmarks.id, bookmark_tags.bookmark_id))
       .innerJoin(tags, eq(bookmark_tags.tag_id, tags.id))
-      .where(eq(bookmarks.created_by, user.id));
+      .where(eq(bookmarks.created_by, user.id))
+      .orderBy(desc(bookmark_tags.created_at));
 
     return data;
   });

@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { and, count, eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "~/db";
 import { bookmark_folders, folders } from "~/db/schema";
@@ -49,7 +49,8 @@ export const getFoldersWithBookmarkCount = createServerFn({ method: "GET" })
       .from(folders)
       .leftJoin(bookmark_folders, eq(folders.id, bookmark_folders.folder_id))
       .where(eq(folders.created_by, user.id))
-      .groupBy(folders.id, folders.name);
+      .groupBy(folders.id, folders.name)
+      .orderBy(desc(folders.created_at));
 
     return data;
   });

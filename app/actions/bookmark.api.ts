@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "~/db";
 import {
@@ -85,6 +85,7 @@ export const getFilteredBookmarks = createServerFn({ method: "GET" })
                   .where(inArray(bookmark_tags.tag_id, data.tags))
               )
         ),
+      orderBy: [desc(bookmarks.created_at)],
     });
 
     const finalData = bookmarksData.map((bookmark) => ({
