@@ -209,7 +209,7 @@ export default function BookmarkForm() {
                     value={state.value}
                     onChange={(e) => handleChange(e.target.value)}
                     required
-                    disabled={addBookmarkMutation.isPending}
+                    disabled={isSubmitting}
                   />
                   {state.meta.errors.length > 0 && (
                     <span className="text-sm text-destructive">
@@ -258,7 +258,7 @@ export default function BookmarkForm() {
                   value={state.value}
                   onChange={(e) => handleChange(e.target.value)}
                   required
-                  disabled={addBookmarkMutation.isPending}
+                  disabled={isSubmitting}
                 />
               )}
             />
@@ -280,7 +280,7 @@ export default function BookmarkForm() {
                     value={state.value}
                     onChange={(e) => handleChange(e.target.value)}
                     className="resize-none"
-                    disabled={addBookmarkMutation.isPending}
+                    disabled={isSubmitting}
                   />
                 );
               }}
@@ -303,7 +303,7 @@ export default function BookmarkForm() {
                     <Switch
                       id="public"
                       checked={state.value}
-                      disabled={addBookmarkMutation.isPending}
+                      disabled={isSubmitting}
                       onCheckedChange={(checked) => handleChange(checked)}
                     />
                     <Label htmlFor="public" className="cursor-pointer">
